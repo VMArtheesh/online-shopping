@@ -3,7 +3,7 @@
    KARTO CUSTOMER LOGIN UI
 ===================================== */
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
 
     const loginForm = document.getElementById("login-form");
 
@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const loginButton = document.getElementById("login-button");
     const loginMessage = document.getElementById("login-message");
     // Redirect customers who already have an active session
-    if (getUserSession()) {
+    if (await getUserSession()) {
         window.location.href = "../customer/dashboard.html";
         return;
     }

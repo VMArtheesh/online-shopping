@@ -152,3 +152,34 @@ async function sendPasswordResetEmail(email) {
 
     return data;
 }
+
+/* =====================================
+   FIREBASE SESSION TOKEN REFRESH
+===================================== */
+
+async function refreshFirebaseToken(refreshToken) {
+
+    const endpoint =
+        `https://securetoken.googleapis.com/v1/token?key=${firebaseConfig.apiKey}`;
+
+    const response = await fetch(endpoint, {
+        method: "POST",
+
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+        },
+
+        body: new URLSearchParams({
+            grant_type: "refresh_token",
+            refresh_token: refreshToken
+        })
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+        throw new Error("Unable to refresh the authentication session.");
+    }
+
+    return data;
+}

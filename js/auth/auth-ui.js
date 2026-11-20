@@ -1,7 +1,6 @@
 
-document.addEventListener("DOMContentLoaded", () => {
-    // Redirect customers who already have an active session
-    if (getUserSession()) {
+document.addEventListener("DOMContentLoaded", async () => {    // Redirect customers who already have an active session
+    if (await getUserSession()) {
         window.location.href = "../customer/dashboard.html";
         return;
     }

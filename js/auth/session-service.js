@@ -32,7 +32,15 @@ function saveUserSession(authData) {
  * @returns {object|null}
  */
 
-function getUserSession() {
+
+/**
+ * Retrieves and validates the current customer session.
+ * Automatically refreshes the Firebase ID token when needed.
+ *
+ * @returns {Promise<object|null>}
+ */
+
+async function getUserSession() {
 
     const sessionData = sessionStorage.getItem("kartoUserSession");
 
@@ -40,16 +48,41 @@ function getUserSession() {
         return null;
     }
 
-    const session = JSON.parse(sessionData);
+    try {
 
-    // Check whether the ID token has expired
-    if (Date.now() >= session.expiresAt) {
+        const session = JSON.parse(sessionData);
+
+        // Refresh the token if it expires within 5 minutes
+        if (Date.now() >= session.expiresAt - (5 * 60 * 1000)) {
+
+            const tokenData = await refreshFirebaseToken(
+                session.refreshToken
+            );
+
+            session.idToken = tokenData.id_token;
+            session.refreshToken = tokenData.refresh_token;
+            session.expiresAt =
+                Date.now() + (Number(tokenData.expires_in) * 1000);
+
+            // Save the refreshed session
+            sessionStorage.setItem(
+                "kartoUserSession",
+                JSON.stringify(session)
+            );
+        }
+
+        return session;
+
+    } catch (error) {
+
+        console.error("Session validation failed:", error);
+
         clearUserSession();
         return null;
-    }
 
-    return session;
+    }
 }
+
 
 
 /**

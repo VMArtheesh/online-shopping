@@ -6,8 +6,7 @@
 document.addEventListener("DOMContentLoaded", async () => {
 
     // Get the current customer session
-    const session = getUserSession();
-
+    const session = await getUserSession();
     // Redirect customers who are not logged in
     if (!session) {
         window.location.href = "../auth/login.html";
