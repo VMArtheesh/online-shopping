@@ -113,3 +113,42 @@ async function signInWithEmailAndPassword(email, password) {
 
     return data;
 }
+/* =====================================
+   FIREBASE PASSWORD RESET
+===================================== */
+
+/**
+ * Sends a password reset email to the customer.
+ *
+ * @param {string} email - Registered customer email
+ * @returns {Promise<object>} Firebase response
+ */
+
+async function sendPasswordResetEmail(email) {
+
+    const endpoint =
+        `${FIREBASE_AUTH_BASE_URL}/accounts:sendOobCode?key=${firebaseConfig.apiKey}`;
+
+    const response = await fetch(endpoint, {
+        method: "POST",
+
+        headers: {
+            "Content-Type": "application/json"
+        },
+
+        body: JSON.stringify({
+            requestType: "PASSWORD_RESET",
+            email: email.trim()
+        })
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+        throw new Error(
+            "Unable to send the password reset email. Please try again."
+        );
+    }
+
+    return data;
+}
