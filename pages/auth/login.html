@@ -1,0 +1,100 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Sign in to your KARTO account.">
+    <title>Sign In | KARTO</title>
+
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../../css/auth.css">
+</head>
+<body>
+
+    <main class="auth-layout">
+
+        <!-- Left Branding Panel -->
+        <section class="auth-brand-panel">
+
+            <a href="../../index.html" class="auth-logo">KARTO</a>
+
+            <div class="auth-brand-content">
+                <p class="auth-eyebrow">WELCOME BACK</p>
+
+                <h1>Good to<br>see you.</h1>
+
+                <p class="auth-brand-description">
+                    Your everyday discoveries are waiting.
+                    Sign in and continue exploring KARTO.
+                </p>
+            </div>
+
+            <p class="auth-brand-footer">
+                A little something for everyone.
+            </p>
+
+        </section>
+
+        <!-- Right Login Panel -->
+        <section class="auth-form-panel">
+
+            <div class="auth-card">
+
+                <div class="auth-heading">
+                    <h2>Welcome back</h2>
+                    <p>Enter your account details to sign in.</p>
+                </div>
+
+                <form id="login-form">
+
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            placeholder="Enter your email"
+                            autocomplete="email"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            placeholder="Enter your password"
+                            autocomplete="current-password"
+                            required
+                        >
+                    </div>
+
+                    <p id="login-message" role="alert"></p>
+
+                    <button type="submit" id="login-button">
+                        Sign In
+                    </button>
+
+                </form>
+
+                <p class="auth-switch">
+                    Don't have an account?
+                    <a href="signup.html">Create an account</a>
+                </p>
+
+            </div>
+
+        </section>
+
+    </main>
+    <script src="../../js/firebase/firebase-config.js"></script>
+    <script src="../../js/firebase/rest-client.js"></script>
+    <script src="../../js/auth/auth-service.js"></script>
+    <script src="../../js/auth/session-service.js"></script>
+    <script src="../../js/auth/login-ui.js"></script>
+
+</body>
+</html>

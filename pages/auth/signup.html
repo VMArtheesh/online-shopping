@@ -1,0 +1,177 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Create your KARTO account.">
+    <title>Create Account | KARTO</title>
+
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../../css/auth.css">
+</head>
+<body>
+
+    <main class="auth-layout">
+
+        <!-- Left Branding Panel -->
+        <section class="auth-brand-panel">
+
+            <a href="../../index.html" class="auth-logo">KARTO</a>
+
+            <div class="auth-brand-content">
+                <p class="auth-eyebrow">YOUR EVERYDAY DISCOVERY</p>
+
+                <h1>Good finds.<br>Everyday.</h1>
+
+                <p class="auth-brand-description">
+                    Discover products you'll love.
+                    Find something good for every part of your day.
+                </p>
+            </div>
+
+            <p class="auth-brand-footer">
+                A little something for everyone.
+            </p>
+
+        </section>
+
+        <!-- Right Signup Panel -->
+        <section class="auth-form-panel">
+
+            <div class="auth-card">
+
+                <!-- Signup Heading -->
+                <div class="auth-heading">
+                    <h2>Create your account</h2>
+                    <p>Join KARTO and discover good finds for everyday life.</p>
+                </div>
+
+                <!-- Progress Indicator -->
+                <div class="signup-progress">
+                    <div class="signup-progress-step active" id="progress-step-1">
+                        <span>1</span>
+                        <p>Personal details</p>
+                    </div>
+
+                    <div class="signup-progress-line" id="progress-line"></div>
+
+                    <div class="signup-progress-step" id="progress-step-2">
+                        <span>2</span>
+                        <p>Account security</p>
+                    </div>
+                </div>
+
+                <form id="signup-form">
+
+                    <!-- Step 1: Personal Details -->
+                    <div class="signup-step" id="signup-step-1">
+
+                        <div class="form-group">
+                            <label for="full-name">Full Name</label>
+                            <input
+                                type="text"
+                                id="full-name"
+                                name="fullName"
+                                placeholder="Enter your full name"
+                                autocomplete="name"
+                                required
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input
+                                type="email"
+                                id="email"
+                                name="email"
+                                placeholder="Enter your email"
+                                autocomplete="email"
+                                required
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <label for="phone">Phone Number</label>
+                            <input
+                                type="tel"
+                                id="phone"
+                                name="phone"
+                                placeholder="Enter your phone number"
+                                autocomplete="tel"
+                                required
+                            >
+                        </div>
+
+                        <button type="button" id="next-button">
+                            Continue
+                        </button>
+
+                    </div>
+
+                    <!-- Step 2: Account Security -->
+                    <div class="signup-step" id="signup-step-2" hidden>
+
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input
+                                type="password"
+                                id="password"
+                                name="password"
+                                placeholder="Create a password"
+                                autocomplete="new-password"
+                                minlength="8"
+                                required
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <label for="confirm-password">Confirm Password</label>
+                            <input
+                                type="password"
+                                id="confirm-password"
+                                name="confirmPassword"
+                                placeholder="Confirm your password"
+                                autocomplete="new-password"
+                                minlength="8"
+                                required
+                            >
+                        </div>
+
+                        <p id="signup-message" role="alert"></p>
+
+                        <div class="signup-actions">
+                            <button type="button" id="back-button">
+                                Back
+                            </button>
+
+                            <button type="submit" id="signup-button">
+                                Create Account
+                            </button>
+                        </div>
+
+                    </div>
+
+                </form>
+
+                <!-- Always Visible Sign In Link -->
+                <p class="auth-switch">
+                    Already have an account?
+                    <a href="login.html">Sign in</a>
+                </p>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <script src="../../js/firebase/firebase-config.js"></script>
+    <script src="../../js/firebase/rest-client.js"></script>
+    <script src="../../js/auth/auth-service.js"></script>
+    <script src="../../js/auth/session-service.js"></script>
+    <script src="../../js/auth/profile-service.js"></script>
+    <script src="../../js/auth/auth-ui.js"></script>
+
+</body>
+</html>
