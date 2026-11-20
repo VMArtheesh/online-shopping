@@ -44,3 +44,35 @@ async function createCustomerProfile(authData, profileData) {
         body: profile
     });
 }
+
+/**
+ * Updates a customer's personal profile.
+ *
+ * @param {string} uid - Customer's Firebase UID
+ * @param {string} idToken - Customer's Firebase ID token
+ * @param {object} profileData - Updated profile information
+ */
+
+
+async function updateCustomerProfile(uid, idToken, profileData) {
+
+    const document = {
+        fields: {
+            fullName: {
+                stringValue: profileData.fullName
+            },
+            phone: {
+                stringValue: profileData.phone
+            }
+        }
+    };
+
+    return await firestoreRequest(
+        `users/${encodeURIComponent(uid)}?updateMask.fieldPaths=fullName&updateMask.fieldPaths=phone`,
+        {
+            method: "PATCH",
+            idToken,
+            body: document
+        }
+    );
+}

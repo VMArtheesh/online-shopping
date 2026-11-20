@@ -1,0 +1,124 @@
+
+/* =====================================
+   KARTO CUSTOMER PAGES
+===================================== */
+
+.customer-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 50px 20px;
+    background-color: #f8f7f4;
+}
+
+.customer-card {
+    width: 100%;
+    max-width: 480px;
+    padding: 42px;
+    background-color: #ffffff;
+    border: 1px solid #eae8e2;
+    border-radius: 8px;
+}
+
+.customer-heading {
+    margin-bottom: 32px;
+}
+
+.customer-heading p:first-child {
+    margin-bottom: 10px;
+    color: #8b806d;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
+.customer-heading h1 {
+    margin-bottom: 10px;
+    color: #292820;
+    font-size: 28px;
+    font-weight: 600;
+}
+
+.customer-heading p:last-child {
+    color: #77746d;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+#profile-form .form-group {
+    margin-bottom: 22px;
+}
+
+#profile-form label {
+    display: block;
+    margin-bottom: 8px;
+    color: #38362f;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+#profile-form input {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid #dedbd3;
+    border-radius: 5px;
+    outline: none;
+    font-family: inherit;
+    font-size: 14px;
+}
+
+#profile-form input:focus {
+    border-color: #8b806d;
+}
+
+#profile-form input:disabled {
+    background-color: #f3f2ef;
+    color: #88857e;
+    cursor: not-allowed;
+}
+
+#save-profile-button {
+    width: 100%;
+    padding: 13px;
+    border: none;
+    border-radius: 5px;
+    background-color: #292820;
+    color: #ffffff;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+#save-profile-button:hover {
+    background-color: #494638;
+}
+
+#profile-message {
+    margin-bottom: 16px;
+    font-size: 13px;
+}
+
+.customer-card > a {
+    display: inline-block;
+    margin-top: 24px;
+    color: #514c40;
+    font-size: 13px;
+    text-decoration: none;
+}
+
+.customer-card > a:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 480px) {
+    .customer-card {
+        padding: 28px 22px;
+    }
+
+    .customer-heading h1 {
+        font-size: 24px;
+    }
+}
