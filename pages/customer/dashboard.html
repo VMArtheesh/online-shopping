@@ -8,40 +8,84 @@
     <title>My Account | KARTO</title>
 
     <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../../css/customer.css">
 </head>
 <body>
 
-    <header>
-        <a href="../../index.html">KARTO</a>
+    <!-- Customer Navigation -->
+    <header class="customer-header">
 
-        <nav>
+        <a href="../../index.html" class="customer-logo">KARTO</a>
+
+        <nav class="customer-nav">
             <a href="../../index.html">Home</a>
-            <a href="dashboard.html">My Account</a>
-            <a href="profile.html">Manage My Profile</a>
+            <a href="dashboard.html" class="active">My Account</a>
+            <a href="profile.html">My Profile</a>
             <button type="button" id="logout-button">Logout</button>
         </nav>
+
     </header>
 
-    <main>
-        <section>
-            <p>MY ACCOUNT</p>
-            <h1>Welcome, <span id="customer-name">Customer</span>!</h1>
-            <p>Welcome to your KARTO account.</p>
+    <main class="dashboard-container">
+
+        <!-- Welcome Section -->
+        <section class="dashboard-welcome">
+
+            <div>
+                <p class="dashboard-eyebrow">CUSTOMER ACCOUNT</p>
+
+                <h1>
+                    Welcome back, <span id="customer-name">Customer</span>!
+                </h1>
+
+                <p class="dashboard-description">
+                    Manage your account and keep your personal information up to date.
+                </p>
+            </div>
+
         </section>
 
-        <section>
-            <h2>Account Information</h2>
+        <!-- Account Information -->
+        <section class="dashboard-section">
 
-            <p>Email: <span id="customer-email">Loading...</span></p>
-            <p>Phone: <span id="customer-phone">Loading...</span></p>
+            <div class="dashboard-section-heading">
+                <div>
+                    <p class="dashboard-eyebrow">YOUR DETAILS</p>
+                    <h2>Account Information</h2>
+                </div>
+
+                <a href="profile.html" class="profile-edit-link">
+                    Edit Profile
+                </a>
+            </div>
+
+            <div class="account-info-card">
+
+                <div class="account-info-item">
+                    <p>Email Address</p>
+                    <span id="customer-email">Loading...</span>
+                </div>
+
+                <div class="account-info-divider"></div>
+
+                <div class="account-info-item">
+                    <p>Phone Number</p>
+                    <span id="customer-phone">Loading...</span>
+                </div>
+
+            </div>
+
         </section>
+
     </main>
 
+    <!-- Firebase and Customer Scripts -->
     <script src="../../js/firebase/firebase-config.js"></script>
     <script src="../../js/firebase/rest-client.js"></script>
     <script src="../../js/auth/auth-service.js"></script>
     <script src="../../js/auth/session-service.js"></script>
     <script src="../../js/customer/dashboard.js"></script>
     <script src="../../js/customer/logout.js"></script>
+
 </body>
 </html>
