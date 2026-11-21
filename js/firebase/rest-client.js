@@ -1,7 +1,8 @@
 
 async function firestoreRequest(endpoint, options = {}) {
-  const url = `${FIREBASE_BASE_URL}/${endpoint}`;
-
+const url = endpoint.startsWith(":")
+    ? `${FIREBASE_BASE_URL}${endpoint}`
+    : `${FIREBASE_BASE_URL}/${endpoint}`;
   const headers = {
     "Content-Type": "application/json"
   };
