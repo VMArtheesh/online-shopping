@@ -697,3 +697,54 @@
     }
 
 }
+
+/* =====================================
+   CUSTOMER CREDIT SECTION
+===================================== */
+
+.customer-credit-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.customer-credit-card {
+    padding: 24px;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+}
+
+.customer-credit-card p {
+    margin: 0 0 12px;
+    color: #666666;
+    font-size: 14px;
+}
+
+.customer-credit-card h3 {
+    margin: 0;
+    color: #222222;
+    font-size: 24px;
+}
+
+.customer-credit-message {
+    margin-top: 14px;
+    color: #777777;
+    font-size: 13px;
+}
+
+@media (max-width: 700px) {
+    .customer-credit-grid {
+        grid-template-columns: 1fr;
+    }
+}
+/* =====================================
+   STICKY CUSTOMER NAVIGATION
+===================================== */
+
+.customer-header,
+.checkout-header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}

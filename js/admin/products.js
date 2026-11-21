@@ -29,8 +29,134 @@ document.addEventListener("DOMContentLoaded", async () => {
     const closeProductButton = document.querySelector("#close-product-form");
     const cancelProductButton = document.querySelector("#cancel-product-form");
 
+    const productCategory = document.querySelector("#product-category");
+
     let editingProductId = null;
     let productEntries = [];
+    let categories = [];
+
+    /* LOAD CATEGORIES FROM FIRESTORE */
+
+    async function loadCategories(session, products) {
+
+        const result = await firestoreRequest(":runQuery", {
+            method: "POST",
+            idToken: session.idToken,
+            body: {
+                structuredQuery: {
+                    from: [{ collectionId: "categories" }]
+                }
+            }
+        });
+
+        categories = result
+            .filter(item => item.document)
+            .map(item => ({
+                id: item.document.name.split("/").pop(),
+                name: item.document.fields.name?.stringValue || ""
+            }))
+            .filter(category => category.name);
+
+        /* REGISTER EXISTING PRODUCT CATEGORIES */
+
+        const existingNames = new Set(
+            categories.map(category => category.name.toLowerCase())
+        );
+
+        const productCategoryNames = [
+            ...new Set(
+                products
+                    .map(product =>
+                        product.fields.category?.stringValue?.trim()
+                    )
+                    .filter(Boolean)
+            )
+        ];
+
+        for (const name of productCategoryNames) {
+
+            if (existingNames.has(name.toLowerCase())) {
+                continue;
+            }
+
+            const now = new Date().toISOString();
+
+            await firestoreRequest("categories", {
+                method: "POST",
+                idToken: session.idToken,
+                body: {
+                    fields: {
+                        name: { stringValue: name },
+                        createdAt: { timestampValue: now },
+                        updatedAt: { timestampValue: now }
+                    }
+                }
+            });
+
+            existingNames.add(name.toLowerCase());
+        }
+
+        /* RELOAD CATEGORY COLLECTION */
+
+        const updatedResult = await firestoreRequest(":runQuery", {
+            method: "POST",
+            idToken: session.idToken,
+            body: {
+                structuredQuery: {
+                    from: [{ collectionId: "categories" }]
+                }
+            }
+        });
+
+        categories = updatedResult
+            .filter(item => item.document)
+            .map(item => ({
+                id: item.document.name.split("/").pop(),
+                name: item.document.fields.name?.stringValue || ""
+            }))
+            .filter(category => category.name)
+            .sort((a, b) => a.name.localeCompare(b.name));
+
+        populateCategoryDropdowns();
+    }
+
+    /* POPULATE BOTH CATEGORY DROPDOWNS */
+
+    function populateCategoryDropdowns() {
+
+        productCategory.innerHTML = "";
+
+        const placeholder = document.createElement("option");
+        placeholder.value = "";
+        placeholder.textContent = "Select Category";
+
+        productCategory.appendChild(placeholder);
+
+        categoryFilter.innerHTML = "";
+
+        const allOption = document.createElement("option");
+        allOption.value = "";
+        allOption.textContent = "All Categories";
+
+        categoryFilter.appendChild(allOption);
+
+        categories.forEach(category => {
+
+            const productOption = document.createElement("option");
+            productOption.value = category.name;
+            productOption.textContent = category.name;
+
+            productCategory.appendChild(productOption);
+
+            const filterOption = document.createElement("option");
+            filterOption.value = category.name;
+            filterOption.textContent = category.name;
+
+            categoryFilter.appendChild(filterOption);
+        });
+    }
+
+    /* PRODUCT MODAL */
 
     function openProductModal() {
 
@@ -58,7 +184,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     cancelProductButton.addEventListener("click", closeProductModal);
 
-    productModal.addEventListener("click", (event) => {
+    productModal.addEventListener("click", event => {
         if (event.target === productModal) {
             closeProductModal();
         }
@@ -66,7 +192,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     /* SAVE OR UPDATE PRODUCT */
 
-    addProductForm.addEventListener("submit", async (event) => {
+    addProductForm.addEventListener("submit", async event => {
 
         event.preventDefault();
 
@@ -102,12 +228,17 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             const productData = {
                 name: document.querySelector("#product-name").value.trim(),
-                category: document.querySelector("#product-category").value,
+                category: productCategory.value,
                 description: document.querySelector("#product-description").value.trim(),
                 price: price,
                 stockQuantity: stock,
                 imageUrl: document.querySelector("#product-image").value.trim()
             };
+
+            if (!productData.category) {
+                alert("Please select a product category.");
+                return;
+            }
 
             if (editingProductId) {
 
@@ -141,7 +272,6 @@ document.addEventListener("DOMContentLoaded", async () => {
             saveProductButton.textContent =
                 editingProductId ? "Update Product" : "Save Product";
         }
-
     });
 
     /* PRODUCT SEARCH AND CATEGORY FILTER */
@@ -171,15 +301,11 @@ document.addEventListener("DOMContentLoaded", async () => {
             if (shouldShow) {
                 visibleCount++;
             }
-
         });
 
-        if (visibleCount === 0) {
-            message.textContent = "No matching products found.";
-        } else {
-            message.textContent =
-                `${visibleCount} of ${productEntries.length} products shown.`;
-        }
+        message.textContent = visibleCount === 0
+            ? "No matching products found."
+            : `${visibleCount} of ${productEntries.length} products shown.`;
     }
 
     searchInput.addEventListener("input", filterProducts);
@@ -201,9 +327,11 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         const products = await getAllProducts(session.idToken);
 
-        productsContainer.innerHTML = "";
+        /* LOAD AND SYNC CATEGORIES BEFORE DISPLAYING PRODUCTS */
 
-        /* PRODUCT TABLE HEADER */
+        await loadCategories(session, products);
+
+        productsContainer.innerHTML = "";
 
         const tableHeader = document.createElement("div");
 
@@ -222,7 +350,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (products.length === 0) {
 
             message.textContent = "No products found.";
-
             return;
         }
 
@@ -260,7 +387,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             productRow.innerHTML = `
                 <div class="admin-product-info">
-
                     <img
                         src="${fields.imageUrl?.stringValue || 'https://placehold.co/80x80?text=No+Image'}"
                         alt="${productName}"
@@ -271,7 +397,6 @@ document.addEventListener("DOMContentLoaded", async () => {
                         <h3>${productName}</h3>
                         <p>${category}</p>
                     </div>
-
                 </div>
 
                 <p>₹${price.toLocaleString("en-IN")}</p>
@@ -306,8 +431,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             productsContainer.appendChild(productRow);
 
-            /* STORE PRODUCT DETAILS FOR FILTERING */
-
             productEntries.push({
                 row: productRow,
                 name: productName,
@@ -329,8 +452,24 @@ document.addEventListener("DOMContentLoaded", async () => {
                 document.querySelector("#product-name").value =
                     fields.name?.stringValue || "";
 
-                document.querySelector("#product-category").value =
+                /* SUPPORT OLD CATEGORIES NOT IN THE LIST */
+
+                const currentCategory =
                     fields.category?.stringValue || "";
+
+                if (
+                    currentCategory &&
+                    ![...productCategory.options].some(
+                        option => option.value === currentCategory
+                    )
+                ) {
+                    const option = document.createElement("option");
+                    option.value = currentCategory;
+                    option.textContent = currentCategory;
+                    productCategory.appendChild(option);
+                }
+
+                productCategory.value = currentCategory;
 
                 document.querySelector("#product-description").value =
                     fields.description?.stringValue || "";
@@ -351,7 +490,6 @@ document.addEventListener("DOMContentLoaded", async () => {
                 saveProductButton.textContent = "Update Product";
 
                 productModal.hidden = false;
-
             });
 
             /* ACTIVATE / DEACTIVATE PRODUCT */
@@ -414,9 +552,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                     toggleButton.textContent =
                         isActive ? "Deactivate" : "Activate";
                 }
-
             });
-
         });
 
         message.textContent =
@@ -428,7 +564,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         message.textContent =
             "Unable to load products. Please try again.";
-
     }
 
 });

@@ -1,0 +1,107 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Manage KARTO product categories.">
+    <title>KARTO | Category Management</title>
+
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../../css/admin/admin.css">
+</head>
+<body>
+
+    <header class="admin-header">
+        <a href="dashboard.html" class="admin-logo">
+            KARTO<span>.</span>
+        </a>
+
+        <div class="admin-header-right">
+            <a href="dashboard.html">Dashboard</a>
+            <span id="admin-name">Administrator</span>
+            <button id="admin-logout" type="button">Logout</button>
+        </div>
+    </header>
+
+    <main class="admin-dashboard">
+
+        <section class="admin-welcome">
+            <p class="admin-eyebrow">STORE MANAGEMENT</p>
+            <h1>Categories</h1>
+            <p>Create and manage your product categories.</p>
+        </section>
+
+        <section class="categories-section">
+
+            <div class="categories-toolbar">
+                <p id="categories-message">Loading categories...</p>
+
+                <button type="button" id="add-category-button">
+                    + Add Category
+                </button>
+            </div>
+
+            <div id="add-category-modal" class="category-modal" hidden>
+
+                <div class="category-form">
+
+                    <div class="category-form-heading">
+                        <div>
+                            <p class="admin-eyebrow">CATEGORY MANAGEMENT</p>
+                            <h2>Add New Category</h2>
+                        </div>
+
+                        <button type="button" id="close-category-form">
+                            &times;
+                        </button>
+                    </div>
+
+                    <form id="category-form">
+
+                        <div class="admin-form-group">
+                            <label for="category-name">Category Name</label>
+                            <input
+                                type="text"
+                                id="category-name"
+                                maxlength="50"
+                                placeholder="Enter category name"
+                                required
+                            >
+                        </div>
+
+                        <div id="category-form-message"></div>
+
+                        <div class="admin-form-actions">
+                            <button type="button" id="cancel-category-form">
+                                Cancel
+                            </button>
+
+                            <button type="submit" id="save-category-button">
+                                Save Category
+                            </button>
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+            <div id="categories-container">
+                <!-- Categories will be loaded dynamically -->
+            </div>
+
+        </section>
+
+    </main>
+
+    <script src="../../js/firebase/firebase-config.js"></script>
+    <script src="../../js/firebase/rest-client.js"></script>
+    <script src="../../js/auth/auth-service.js"></script>
+    <script src="../../js/auth/session-service.js"></script>
+    <script src="../../js/admin/admin-guard.js"></script>
+    <script src="../../js/admin/categories.js"></script>
+
+</body>
+</html>

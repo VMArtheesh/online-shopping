@@ -24,29 +24,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (!value) return null;
 
-        if (value.stringValue !== undefined) {
-            return value.stringValue;
-        }
-
-        if (value.integerValue !== undefined) {
-            return Number(value.integerValue);
-        }
-
-        if (value.doubleValue !== undefined) {
-            return Number(value.doubleValue);
-        }
-
-        if (value.booleanValue !== undefined) {
-            return value.booleanValue;
-        }
-
-        if (value.timestampValue !== undefined) {
-            return value.timestampValue;
-        }
-
-        if (value.nullValue !== undefined) {
-            return null;
-        }
+        if (value.stringValue !== undefined) return value.stringValue;
+        if (value.integerValue !== undefined) return Number(value.integerValue);
+        if (value.doubleValue !== undefined) return Number(value.doubleValue);
+        if (value.booleanValue !== undefined) return value.booleanValue;
+        if (value.timestampValue !== undefined) return value.timestampValue;
+        if (value.nullValue !== undefined) return null;
 
         if (value.mapValue) {
             return Object.fromEntries(
@@ -90,13 +73,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const element = document.createElement(tag);
 
-        if (className) {
-            element.className = className;
-        }
+        if (className) element.className = className;
 
-        if (text !== undefined) {
-            element.textContent = text;
-        }
+        if (text !== undefined) element.textContent = text;
 
         return element;
     }
@@ -120,9 +99,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function formatDate(dateValue) {
 
-        if (!dateValue) {
-            return "Date unavailable";
-        }
+        if (!dateValue) return "Date unavailable";
 
         return new Date(dateValue).toLocaleString("en-IN", {
             dateStyle: "medium",
@@ -235,7 +212,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         try {
 
-            // Extract orders/{orderId} from the Firestore resource name.
             const documentPath = order.documentName
                 .split("/documents/")
                 .pop();
@@ -262,7 +238,10 @@ document.addEventListener("DOMContentLoaded", () => {
             order.updatedAt = new Date().toISOString();
 
             updateSummary();
+
             ordersMessage.textContent = "Order updated successfully.";
+
+            return true;
 
         } catch (error) {
 
@@ -270,7 +249,125 @@ document.addEventListener("DOMContentLoaded", () => {
 
             alert(`Unable to update order: ${error.message}`);
 
+            return false;
+        }
+    }
+
+    /* =====================================
+       SEND PAYMENT CONFIRMATION EMAIL
+    ===================================== */
+
+    async function sendPaymentConfirmationEmail(order, amountPaid) {
+
+        // Retrieve the customer's registered email address.
+        const customerResponse = await firestoreRequest(
+            `users/${encodeURIComponent(order.customerId)}`,
+            {
+                idToken: session.idToken
+            }
+        );
+
+        const customerFields = customerResponse.fields || {};
+
+        const customerEmail =
+            customerFields.email?.stringValue || "";
+
+        if (!customerEmail) {
+            throw new Error(
+                "Customer email address is unavailable."
+            );
+        }
+
+        const paymentDate = new Date().toISOString();
+
+        await sendKartoPaymentEmail({
+
+            email: customerEmail,
+
+            customer_name: order.customerName || "Customer",
+
+            order_id: order.orderId,
+
+            payment_method:
+                (order.paymentMethod || "N/A").toUpperCase(),
+
+            amount_paid: formatCurrency(amountPaid),
+
+            payment_status: "Paid",
+
+            payment_date: formatDate(paymentDate)
+
+        });
+
+        console.log(
+            `Payment confirmation email sent for Order #${order.orderId}.`
+        );
+    }
+
+    /* =====================================
+       MARK CASH PAYMENT AS PAID
+    ===================================== */
+
+    async function markCashPaymentAsPaid(order, button) {
+
+        if (
+            order.paymentMethod !== "cash" ||
+            order.paymentStatus !== "pending"
+        ) {
+            return;
+        }
+
+        const confirmed = window.confirm(
+            `Have you received the cash payment for Order #${order.orderId}?\n\n` +
+            `Amount: ${formatCurrency(order.totalAmount)}\n\n` +
+            `Only confirm after receiving the payment.`
+        );
+
+        if (!confirmed) return;
+
+        button.disabled = true;
+        button.textContent = "Updating...";
+
+        const success = await updateOrderField(
+            order,
+            "paymentStatus",
+            "paid"
+        );
+
+        if (success) {
+
+            // Payment is already saved in Firestore.
+            // Email failure must not reverse the payment update.
+
+            try {
+
+                await sendPaymentConfirmationEmail(
+                    order,
+                    order.totalAmount
+                );
+
+                ordersMessage.textContent =
+                    "Payment updated successfully. Confirmation email sent!";
+
+            } catch (emailError) {
+
+                console.error(
+                    "Payment saved, but confirmation email failed:",
+                    emailError
+                );
+
+                ordersMessage.textContent =
+                    "Payment updated successfully, but the confirmation email could not be sent.";
+
+            }
+
             renderOrders();
+
+        } else {
+
+            button.disabled = false;
+            button.textContent = "Mark as Paid";
+
         }
     }
 
@@ -332,6 +429,35 @@ document.addEventListener("DOMContentLoaded", () => {
             )
         );
 
+        // Cash payment action
+
+        if (
+            order.paymentMethod === "cash" &&
+            order.paymentStatus === "pending" &&
+            order.orderStatus !== "cancelled"
+        ) {
+
+            const paymentActions = createElement(
+                "div",
+                "order-payment-actions"
+            );
+
+            const paymentButton = createElement(
+                "button",
+                "mark-paid-button",
+                "Mark as Paid"
+            );
+
+            paymentButton.type = "button";
+
+            paymentButton.addEventListener("click", () => {
+                markCashPaymentAsPaid(order, paymentButton);
+            });
+
+            paymentActions.appendChild(paymentButton);
+            customer.appendChild(paymentActions);
+        }
+
         // Order items
 
         const itemsHeading = createElement("h4", "", "Order Items");
@@ -343,7 +469,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const lineTotal = item.lineTotal !== undefined
                 ? item.lineTotal
-                : (Number(item.unitPrice) || 0) * (Number(item.quantity) || 0);
+                : (Number(item.unitPrice) || 0) *
+                  (Number(item.quantity) || 0);
 
             itemRow.textContent =
                 `${item.productName || "Product"} × ${item.quantity || 0} — ` +
@@ -367,11 +494,11 @@ document.addEventListener("DOMContentLoaded", () => {
             { value: "cancelled", label: "Cancelled" }
         ];
 
-        // Preserve an unexpected existing status rather than hiding it.
-
         if (
             order.orderStatus &&
-            !statusOptions.some(option => option.value === order.orderStatus)
+            !statusOptions.some(option =>
+                option.value === order.orderStatus
+            )
         ) {
             statusOptions.unshift({
                 value: order.orderStatus,

@@ -117,6 +117,41 @@ document.addEventListener("DOMContentLoaded", async () => {
     const cancelModalButton = document.getElementById("repayment-cancel");
 
     /* =====================================
+       DECODE FIRESTORE FIELDS
+    ===================================== */
+
+    function decodeFields(fields) {
+
+        const result = {};
+
+        Object.entries(fields).forEach(([key, value]) => {
+            result[key] = decodeValue(value);
+        });
+
+        return result;
+    }
+
+    function decodeValue(value) {
+
+        if (value.stringValue !== undefined) return value.stringValue;
+        if (value.integerValue !== undefined) return Number(value.integerValue);
+        if (value.doubleValue !== undefined) return Number(value.doubleValue);
+        if (value.booleanValue !== undefined) return value.booleanValue;
+        if (value.timestampValue !== undefined) return value.timestampValue;
+        if (value.nullValue !== undefined) return null;
+
+        if (value.mapValue !== undefined) {
+            return decodeFields(value.mapValue.fields || {});
+        }
+
+        if (value.arrayValue !== undefined) {
+            return (value.arrayValue.values || []).map(decodeValue);
+        }
+
+        return null;
+    }
+
+    /* =====================================
        LOAD CUSTOMER DATA
     ===================================== */
 
@@ -190,41 +225,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         customersMessage.textContent =
             error.message || "Unable to load customer records.";
-    }
-
-    /* =====================================
-       DECODE FIRESTORE FIELDS
-    ===================================== */
-
-    function decodeFields(fields) {
-
-        const result = {};
-
-        Object.entries(fields).forEach(([key, value]) => {
-            result[key] = decodeValue(value);
-        });
-
-        return result;
-    }
-
-    function decodeValue(value) {
-
-        if (value.stringValue !== undefined) return value.stringValue;
-        if (value.integerValue !== undefined) return Number(value.integerValue);
-        if (value.doubleValue !== undefined) return Number(value.doubleValue);
-        if (value.booleanValue !== undefined) return value.booleanValue;
-        if (value.timestampValue !== undefined) return value.timestampValue;
-        if (value.nullValue !== undefined) return null;
-
-        if (value.mapValue !== undefined) {
-            return decodeFields(value.mapValue.fields || {});
-        }
-
-        if (value.arrayValue !== undefined) {
-            return (value.arrayValue.values || []).map(decodeValue);
-        }
-
-        return null;
     }
 
     /* =====================================
@@ -626,16 +626,26 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         try {
 
-            await recordRepayment(
+            const emailFailures = await recordRepayment(
                 selectedCustomer,
                 repaymentAmount
             );
 
             closeRepaymentModal();
 
-            showRepaymentMessage(
-                `Repayment of ${formatCurrency(repaymentAmount)} recorded successfully.`
-            );
+            if (emailFailures > 0) {
+
+                showRepaymentMessage(
+                    `Repayment of ${formatCurrency(repaymentAmount)} recorded successfully, but ${emailFailures} payment email(s) could not be sent.`,
+                    true
+                );
+
+            } else {
+
+                showRepaymentMessage(
+                    `Repayment of ${formatCurrency(repaymentAmount)} recorded successfully. Payment confirmation email(s) sent where orders were fully paid.`
+                );
+            }
 
         } catch (error) {
 
@@ -698,6 +708,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         let amountToAllocate = repaymentAmount;
         const orderUpdates = [];
 
+        // Allocate repayment to the oldest unpaid orders first.
+
         for (const order of unpaidOrders) {
 
             if (amountToAllocate <= 0) break;
@@ -719,6 +731,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             orderUpdates.push({
                 order,
+                allocatedAmount,
                 amountPaid: fullyPaid
                     ? Number(order.totalAmount)
                     : newAmountPaid,
@@ -812,6 +825,66 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         updateCustomerSummary();
         renderCustomers(getFilteredCustomers());
+
+        /* =====================================
+           SEND PAYMENT CONFIRMATION EMAILS
+        ===================================== */
+
+        let emailFailures = 0;
+
+        for (const update of orderUpdates) {
+
+            // Only send email when an order becomes fully paid.
+
+            if (update.paymentStatus !== "paid") {
+                continue;
+            }
+
+            try {
+
+                if (!customer.email) {
+                    throw new Error(
+                        "Customer email address is unavailable."
+                    );
+                }
+
+                await sendKartoPaymentEmail({
+
+                    email: customer.email,
+
+                    customer_name: customer.fullName || "Customer",
+
+                    order_id: update.order.orderId || "N/A",
+
+                    payment_method: "CREDIT",
+
+                    amount_paid: formatCurrency(update.allocatedAmount),
+
+                    payment_status: "Paid",
+
+                    payment_date: new Date(now).toLocaleString("en-IN", {
+                        dateStyle: "medium",
+                        timeStyle: "short"
+                    })
+
+                });
+
+                console.log(
+                    `Payment confirmation email sent for Order #${update.order.orderId}.`
+                );
+
+            } catch (emailError) {
+
+                emailFailures++;
+
+                console.error(
+                    `Payment email failed for Order #${update.order.orderId}:`,
+                    emailError
+                );
+            }
+        }
+
+        return emailFailures;
     }
 
     /* =====================================

@@ -27,6 +27,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     let cartIsValid = false;
     let creditDataLoaded = false;
     let isSubmitting = false;
+    let customerEmail = "";
 
     let creditData = {
         limit: 0,
@@ -131,6 +132,11 @@ document.addEventListener("DOMContentLoaded", async () => {
         );
 
         const fields = response.fields || {};
+
+        customerEmail =
+            fields.email?.stringValue ||
+            session.email ||
+            "";
 
         document.querySelector("#delivery-name").value =
             fields.fullName?.stringValue || "";
@@ -563,6 +569,84 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     /* =====================================
+       SEND ORDER CONFIRMATION EMAIL
+    ===================================== */
+
+    async function sendOrderConfirmationEmail(details) {
+
+        if (!customerEmail) {
+
+            throw new Error(
+                "Customer email address is unavailable."
+            );
+
+        }
+
+        await sendKartoOrderEmail({
+
+            email: customerEmail,
+
+            customer_name: details.customerName,
+
+            order_id: details.orderId,
+
+            order_date: new Date(
+                details.orderDate
+            ).toLocaleString("en-IN"),
+
+            orders: details.items.map(item => ({
+                name: item.name,
+                units: item.quantity,
+                line_total: formatPrice(
+                    item.price * item.quantity
+                )
+            })),
+
+            order_total: formatPrice(details.totalAmount),
+
+            delivery_name: details.customerName,
+
+            delivery_phone: details.phone,
+
+            delivery_address: details.address,
+
+            payment_method:
+                details.paymentMethod === "credit"
+                    ? "Credit"
+                    : "Cash",
+
+            payment_status:
+                details.paymentMethod === "cash"
+                    ? "Pending"
+                    : "Unpaid",
+
+            is_credit: details.paymentMethod === "credit",
+
+            credit_limit: formatPrice(
+                details.creditLimit
+            ),
+
+            previous_outstanding: formatPrice(
+                details.previousOutstanding
+            ),
+
+            credit_added: formatPrice(
+                details.creditAdded
+            ),
+
+            new_outstanding: formatPrice(
+                details.newOutstanding
+            ),
+
+            available_credit: formatPrice(
+                details.availableCredit
+            )
+
+        });
+
+    }
+
+    /* =====================================
        PLACE ORDER
     ===================================== */
 
@@ -745,7 +829,9 @@ document.addEventListener("DOMContentLoaded", async () => {
                 }
 
                 latestCredit = {
+                    limit,
                     outstanding,
+                    available,
                     updateTime: creditResponse.updateTime
                 };
 
@@ -942,6 +1028,65 @@ document.addEventListener("DOMContentLoaded", async () => {
                 }
             );
 
+            // Send email only after successful order creation.
+            let orderEmailSent = false;
+
+            try {
+
+                await sendOrderConfirmationEmail({
+
+                    customerName: fullName,
+
+                    orderId: orderId,
+
+                    orderDate: now,
+
+                    items: latestItems,
+
+                    totalAmount: totalAmount,
+
+                    paymentMethod: paymentMethod,
+
+                    phone: phone,
+
+                    address: address,
+
+                    creditLimit:
+                        latestCredit?.limit ?? creditData.limit,
+
+                    previousOutstanding:
+                        latestCredit?.outstanding ?? creditData.outstanding,
+
+                    creditAdded:
+                        paymentMethod === "credit" ? totalAmount : 0,
+
+                    newOutstanding:
+                        paymentMethod === "credit"
+                            ? latestCredit.outstanding + totalAmount
+                            : creditData.outstanding,
+
+                    availableCredit:
+                        paymentMethod === "credit"
+                            ? latestCredit.available - totalAmount
+                            : creditData.available
+
+                });
+
+                orderEmailSent = true;
+
+                console.log(
+                    "KARTO order confirmation email sent."
+                );
+
+            } catch (emailError) {
+
+                console.error(
+                    "Order saved, but confirmation email failed:",
+                    emailError
+                );
+
+            }
+
             // Display order confirmation.
             checkoutItems = [];
             cartIsValid = false;
@@ -983,8 +1128,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             creditSummary.hidden = true;
 
-            messageElement.textContent =
-                "Your order has been saved successfully.";
+            messageElement.textContent = orderEmailSent
+                ? "Your order has been saved. Confirmation email sent!"
+                : "Your order has been saved, but the confirmation email could not be sent.";
 
             placeOrderButton.textContent = "Order Placed";
             placeOrderButton.disabled = true;
