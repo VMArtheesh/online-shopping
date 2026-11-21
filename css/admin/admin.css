@@ -1779,3 +1779,776 @@ body {
     cursor: not-allowed;
     opacity: 0.6;
 }
+
+/* =====================================
+   KARTO ADMIN ORDER CARDS
+===================================== */
+
+#orders-container {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.order-card {
+    padding: 25px;
+    border: 1px solid #e9e6e1;
+    border-radius: 8px;
+    background: #ffffff;
+    transition: border-color 0.2s ease,
+                box-shadow 0.2s ease;
+}
+
+.order-card:hover {
+    border-color: #d6c5ae;
+    box-shadow: 0 5px 18px rgba(0, 0, 0, 0.035);
+}
+
+.order-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #eeeae4;
+}
+
+.order-card-header h3 {
+    margin: 0 0 7px;
+    color: #292722;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.order-card-header p {
+    margin: 0;
+    color: #89847e;
+    font-size: 12px;
+}
+
+.order-card-total {
+    color: #765b38;
+    font-size: 19px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.order-card-details {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px 25px;
+    padding: 20px 0;
+}
+
+.order-card-details p {
+    margin: 0;
+    color: #625e58;
+    font-size: 13px;
+    line-height: 1.6;
+    overflow-wrap: anywhere;
+}
+
+.order-card h4 {
+    margin: 5px 0 14px;
+    color: #292722;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.order-card-items {
+    padding: 15px 18px;
+    border-radius: 6px;
+    background: #f8f7f4;
+}
+
+.order-card-item {
+    margin: 0;
+    padding: 9px 0;
+    border-bottom: 1px solid #eae7e1;
+    color: #625e58;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.order-card-item:last-child {
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+.order-card-controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    margin-top: 18px;
+}
+
+.order-card-controls label {
+    color: #625e58;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.order-status-select {
+    min-width: 160px;
+    padding: 10px 35px 10px 12px;
+    border: 1px solid #e5e1db;
+    border-radius: 5px;
+    background: #ffffff;
+    color: #292722;
+    font-family: inherit;
+    font-size: 12px;
+    cursor: pointer;
+    outline: none;
+}
+
+.order-status-select:focus {
+    border-color: #a67c52;
+}
+
+#orders-container:empty::after {
+    content: "No orders to display.";
+    display: block;
+    padding: 35px 15px;
+    color: #89847e;
+    font-size: 13px;
+    text-align: center;
+}
+
+@media (max-width: 600px) {
+    .order-card {
+        padding: 18px;
+    }
+
+    .order-card-header {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .order-card-details {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    .order-card-controls {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .order-status-select {
+        width: 100%;
+    }
+}
+
+/* =====================================
+   KARTO ADMIN CUSTOMER CREDIT MANAGEMENT
+===================================== */
+
+.customer-card {
+    padding: 24px;
+    margin-bottom: 18px;
+    border: 1px solid #e9e6e1;
+    border-radius: 8px;
+    background: #ffffff;
+}
+
+.customer-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #eeeae4;
+}
+
+.customer-card-header h3 {
+    margin: 0;
+    color: #292722;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.customer-card-header span {
+    color: #89847e;
+    font-size: 12px;
+}
+
+.customer-card-details {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 15px;
+    padding: 18px 0;
+}
+
+.customer-card-details p {
+    margin: 0;
+    color: #625e58;
+    font-size: 13px;
+    line-height: 1.6;
+    overflow-wrap: anywhere;
+}
+
+.customer-card h4 {
+    margin: 5px 0 12px;
+    color: #292722;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.customer-credit-orders {
+    padding: 12px 16px;
+    border-radius: 6px;
+    background: #f8f7f4;
+}
+
+.customer-credit-orders p {
+    margin: 0;
+    padding: 9px 0;
+    border-bottom: 1px solid #eae7e1;
+    color: #625e58;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.customer-credit-orders p:last-child {
+    border-bottom: none;
+}
+
+.customer-credit-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 18px;
+}
+
+.customer-repayment-button {
+    padding: 11px 20px;
+    border: none;
+    border-radius: 5px;
+    background: #765b38;
+    color: #ffffff;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.customer-repayment-button:hover:not(:disabled) {
+    background: #5e472d;
+}
+
+.customer-repayment-button:disabled {
+    background: #c9c5bf;
+    cursor: not-allowed;
+}
+
+#repayment-message {
+    margin-top: 18px;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.repayment-success {
+    color: #287447;
+}
+
+.repayment-error {
+    color: #b33b32;
+}
+
+@media (max-width: 700px) {
+
+    .customer-card {
+        padding: 18px;
+    }
+
+    .customer-card-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .customer-card-details {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    .customer-credit-actions {
+        justify-content: stretch;
+    }
+
+    .customer-repayment-button {
+        width: 100%;
+    }
+
+}
+
+/* =====================================
+   KARTO REPAYMENT MODAL
+===================================== */
+
+.repayment-modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: rgba(25, 24, 22, 0.48);
+    backdrop-filter: blur(3px);
+}
+
+.repayment-modal-overlay.active {
+    display: flex;
+}
+
+body.repayment-modal-open {
+    overflow: hidden;
+}
+
+.repayment-modal {
+    width: 100%;
+    max-width: 460px;
+    padding: 28px;
+    border: 1px solid #e9e6e1;
+    border-radius: 10px;
+    background: #ffffff;
+    box-shadow: 0 18px 55px rgba(0, 0, 0, 0.14);
+    animation: repayment-modal-appear 0.2s ease;
+}
+
+@keyframes repayment-modal-appear {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.repayment-modal-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 15px;
+    margin-bottom: 24px;
+}
+
+.repayment-modal-header .admin-eyebrow {
+    margin-bottom: 7px;
+}
+
+.repayment-modal-header h2 {
+    margin: 0;
+    color: #292722;
+    font-size: 21px;
+    font-weight: 600;
+}
+
+.repayment-modal-close {
+    width: 32px;
+    height: 32px;
+    border: none;
+    border-radius: 50%;
+    background: #f5f3ef;
+    color: #625e58;
+    font-size: 23px;
+    line-height: 1;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.repayment-modal-close:hover {
+    background: #eae6df;
+}
+
+.repayment-customer-info {
+    margin-bottom: 18px;
+}
+
+.repayment-customer-info p,
+.repayment-balance p {
+    margin: 0 0 6px;
+    color: #89847e;
+    font-size: 12px;
+}
+
+.repayment-customer-info h3 {
+    margin: 0;
+    color: #292722;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.repayment-balance {
+    padding: 17px 18px;
+    border: 1px solid #eee8df;
+    border-radius: 7px;
+    background: #faf8f5;
+}
+
+.repayment-balance h2 {
+    margin: 0;
+    color: #765b38;
+    font-size: 25px;
+    font-weight: 700;
+}
+
+.repayment-form-group {
+    margin-top: 22px;
+}
+
+.repayment-form-group label {
+    display: block;
+    margin-bottom: 9px;
+    color: #3c3934;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.repayment-form-group input {
+    width: 100%;
+    padding: 13px 14px;
+    border: 1px solid #ded9d1;
+    border-radius: 6px;
+    background: #ffffff;
+    color: #292722;
+    font-family: inherit;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s ease,
+                box-shadow 0.2s ease;
+}
+
+.repayment-form-group input:focus {
+    border-color: #a67c52;
+    box-shadow: 0 0 0 3px rgba(166, 124, 82, 0.10);
+}
+
+#repayment-validation {
+    min-height: 18px;
+    margin: 7px 0 0;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.repayment-input-error {
+    color: #b33b32;
+}
+
+.repayment-input-success {
+    color: #287447;
+}
+
+.repayment-balance-preview {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 20px;
+    padding: 15px 0;
+    border-top: 1px solid #eeeae4;
+    border-bottom: 1px solid #eeeae4;
+}
+
+.repayment-balance-preview span {
+    color: #625e58;
+    font-size: 13px;
+}
+
+.repayment-balance-preview strong {
+    color: #292722;
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.repayment-modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 23px;
+}
+
+.repayment-cancel-button,
+.repayment-confirm-button {
+    min-height: 42px;
+    padding: 11px 17px;
+    border-radius: 5px;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease,
+                opacity 0.2s ease;
+}
+
+.repayment-cancel-button {
+    border: 1px solid #ded9d1;
+    background: #ffffff;
+    color: #625e58;
+}
+
+.repayment-cancel-button:hover {
+    background: #f7f5f1;
+}
+
+.repayment-confirm-button {
+    border: 1px solid #765b38;
+    background: #765b38;
+    color: #ffffff;
+}
+
+.repayment-confirm-button:hover:not(:disabled) {
+    background: #5e472d;
+}
+
+.repayment-confirm-button:disabled {
+    border-color: #c9c5bf;
+    background: #c9c5bf;
+    cursor: not-allowed;
+}
+
+@media (max-width: 480px) {
+
+    .repayment-modal {
+        padding: 21px;
+    }
+
+    .repayment-modal-header h2 {
+        font-size: 19px;
+    }
+
+    .repayment-modal-actions {
+        flex-direction: column-reverse;
+    }
+
+    .repayment-cancel-button,
+    .repayment-confirm-button {
+        width: 100%;
+    }
+
+}
+
+/* =====================================
+   KARTO SALES REPORTS
+===================================== */
+
+.sales-report-filters {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin: 24px 0;
+    padding: 18px;
+    border: 1px solid #e9e6e1;
+    border-radius: 8px;
+    background: #ffffff;
+}
+
+.sales-report-filters label {
+    color: #625e58;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.sales-report-filters input {
+    min-height: 40px;
+    padding: 8px 10px;
+    border: 1px solid #ded9d1;
+    border-radius: 5px;
+    font-family: inherit;
+}
+
+.sales-filter-button,
+.sales-reset-button {
+    min-height: 40px;
+    padding: 9px 16px;
+    border-radius: 5px;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.sales-filter-button {
+    border: 1px solid #765b38;
+    background: #765b38;
+    color: #ffffff;
+}
+
+.sales-reset-button {
+    border: 1px solid #ded9d1;
+    background: #ffffff;
+    color: #625e58;
+}
+
+.sales-report-summary {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+    margin-bottom: 30px;
+}
+
+.sales-report-summary-card {
+    padding: 20px;
+    border: 1px solid #e9e6e1;
+    border-radius: 8px;
+    background: #ffffff;
+}
+
+.sales-report-summary-card p {
+    margin: 0 0 12px;
+    color: #817b73;
+    font-size: 13px;
+}
+
+.sales-report-summary-card h3 {
+    margin: 0;
+    color: #292722;
+    font-size: 21px;
+    font-weight: 700;
+}
+
+.sales-report-content > .inventory-report-heading {
+    margin-top: 30px;
+}
+
+@media (max-width: 700px) {
+
+    .sales-report-summary {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .sales-report-filters {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .sales-report-filters input,
+    .sales-filter-button,
+    .sales-reset-button {
+        width: 100%;
+    }
+
+}
+
+@media (max-width: 420px) {
+
+    .sales-report-summary {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+/* =====================================
+   KARTO CUSTOMER REPORTS
+===================================== */
+
+.customer-report-filters {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin: 24px 0;
+    padding: 18px;
+    border: 1px solid #e9e6e1;
+    border-radius: 8px;
+    background: #ffffff;
+}
+
+.customer-report-filters label {
+    color: #625e58;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.customer-report-filters input {
+    min-height: 40px;
+    padding: 8px 10px;
+    border: 1px solid #ded9d1;
+    border-radius: 5px;
+    font-family: inherit;
+}
+
+.customer-filter-button,
+.customer-reset-button {
+    min-height: 40px;
+    padding: 9px 16px;
+    border-radius: 5px;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.customer-filter-button {
+    border: 1px solid #765b38;
+    background: #765b38;
+    color: #ffffff;
+}
+
+.customer-reset-button {
+    border: 1px solid #ded9d1;
+    background: #ffffff;
+    color: #625e58;
+}
+
+.customer-report-summary {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+    margin-bottom: 30px;
+}
+
+.customer-report-summary-card {
+    padding: 20px;
+    border: 1px solid #e9e6e1;
+    border-radius: 8px;
+    background: #ffffff;
+}
+
+.customer-report-summary-card p {
+    margin: 0 0 12px;
+    color: #817b73;
+    font-size: 13px;
+}
+
+.customer-report-summary-card h3 {
+    margin: 0;
+    color: #292722;
+    font-size: 21px;
+}
+
+.customer-report-content > .inventory-report-heading {
+    margin-top: 30px;
+}
+
+@media (max-width: 800px) {
+    .customer-report-summary {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 700px) {
+    .customer-report-filters {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .customer-report-filters input,
+    .customer-filter-button,
+    .customer-reset-button {
+        width: 100%;
+    }
+}
+
+@media (max-width: 420px) {
+    .customer-report-summary {
+        grid-template-columns: 1fr;
+    }
+}

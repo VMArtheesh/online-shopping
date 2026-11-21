@@ -1,0 +1,189 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Complete your KARTO order.">
+    <title>KARTO | Checkout</title>
+
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../../css/customer.css">
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header class="checkout-header">
+        <a href="../../index.html" class="checkout-logo">KARTO</a>
+        <a href="../../index.html" class="continue-shopping">
+            Continue Shopping
+        </a>
+    </header>
+
+    <main class="checkout-page">
+
+        <div class="checkout-heading">
+            <h1>Checkout</h1>
+            <p>Complete your order in a few simple steps.</p>
+        </div>
+
+        <div class="checkout-layout">
+
+            <!-- LEFT SECTION -->
+            <div class="checkout-details">
+
+                <!-- ORDER ITEMS -->
+                <section class="checkout-card">
+                    <h2>Order Summary</h2>
+
+                    <div id="checkout-items">
+                        <p>Loading your cart...</p>
+                    </div>
+                </section>
+
+                <!-- DELIVERY DETAILS -->
+                <section class="checkout-card">
+                    <h2>Delivery Details</h2>
+
+                    <form id="checkout-form">
+
+                        <div class="checkout-form-group">
+                            <label for="delivery-name">Full Name</label>
+                            <input
+                                type="text"
+                                id="delivery-name"
+                                name="fullName"
+                                placeholder="Enter your full name"
+                                required
+                            >
+                        </div>
+
+                        <div class="checkout-form-group">
+                            <label for="delivery-phone">Phone Number</label>
+                            <input
+                                type="tel"
+                                id="delivery-phone"
+                                name="phone"
+                                placeholder="Enter your phone number"
+                                pattern="[0-9]{10}"
+                                maxlength="10"
+                                required
+                            >
+                        </div>
+
+                        <div class="checkout-form-group">
+                            <label for="delivery-address">Delivery Address</label>
+                            <textarea
+                                id="delivery-address"
+                                name="address"
+                                rows="4"
+                                placeholder="Enter your complete delivery address"
+                                required
+                            ></textarea>
+                        </div>
+
+                        <!-- PAYMENT METHOD -->
+                        <div class="checkout-payment">
+                            <h2>Payment Method</h2>
+
+                            <label class="payment-option">
+                                <input
+                                    type="radio"
+                                    name="paymentMethod"
+                                    value="cash"
+                                    required
+                                >
+                                <span>
+                                    <strong>Cash</strong>
+                                    <small>Pay for your order using cash.</small>
+                                </span>
+                            </label>
+
+                            <label class="payment-option">
+                                <input
+                                    type="radio"
+                                    name="paymentMethod"
+                                    value="credit"
+                                    required
+                                >
+                                <span>
+                                    <strong>Credit</strong>
+                                    <small>Purchase using your available credit limit.</small>
+                                </span>
+                            </label>
+
+                            <!-- CREDIT SUMMARY -->
+                            <div id="credit-summary" class="credit-summary" hidden>
+                                <div>
+                                    <span>Universal Credit Limit</span>
+                                    <strong id="credit-limit">₹0.00</strong>
+                                </div>
+
+                                <div>
+                                    <span>Outstanding Credit</span>
+                                    <strong id="outstanding-credit">₹0.00</strong>
+                                </div>
+
+                                <div>
+                                    <span>Available Credit</span>
+                                    <strong id="available-credit">₹0.00</strong>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </form>
+                </section>
+
+            </div>
+
+            <!-- RIGHT SECTION -->
+            <aside class="checkout-card checkout-total-card">
+
+                <h2>Order Total</h2>
+
+                <div class="checkout-price-row">
+                    <span>Subtotal</span>
+                    <strong id="checkout-subtotal">₹0.00</strong>
+                </div>
+
+                <div class="checkout-price-row">
+                    <span>Delivery</span>
+                    <strong id="checkout-delivery">₹0.00</strong>
+                </div>
+
+                <div class="checkout-price-row checkout-grand-total">
+                    <span>Total</span>
+                    <strong id="checkout-total">₹0.00</strong>
+                </div>
+
+                <button
+                    type="submit"
+                    form="checkout-form"
+                    id="place-order-button"
+                    disabled
+                >
+                    Place Order
+                </button>
+
+                <p id="checkout-message" role="status"></p>
+
+            </aside>
+
+        </div>
+
+    </main>
+
+    <!-- FIREBASE AND SERVICES -->
+    <script src="../../js/firebase/firebase-config.js"></script>
+    <script src="../../js/firebase/rest-client.js"></script>
+    <script src="../../js/auth/auth-service.js"></script>
+    <script src="../../js/auth/session-service.js"></script>
+    <script src="../../js/services/product-service.js"></script>
+    <script src="../../js/services/cart-service.js"></script>
+
+    <!-- CHECKOUT -->
+    <script src="../../js/customer/checkout.js"></script>
+
+</body>
+</html>

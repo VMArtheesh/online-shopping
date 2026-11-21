@@ -4,15 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="KARTO customer management.">
+    <meta name="description" content="KARTO customer and credit management.">
     <title>KARTO | Customers</title>
 
     <link rel="stylesheet" href="../../css/style.css">
     <link rel="stylesheet" href="../../css/admin/admin.css">
 </head>
 <body>
-
-    <!-- ADMIN HEADER -->
 
     <header class="admin-header">
 
@@ -27,22 +25,18 @@
 
     </header>
 
-    <!-- CUSTOMER MANAGEMENT -->
-
     <main class="admin-main">
 
         <section class="admin-welcome">
-
             <div>
                 <p class="admin-eyebrow">CUSTOMER MANAGEMENT</p>
                 <h1>Customers</h1>
-                <p>View customer accounts and their purchase activity.</p>
+                <p>View customer accounts and manage outstanding credit.</p>
             </div>
 
             <a href="dashboard.html" class="admin-back-link">
                 Back to Dashboard
             </a>
-
         </section>
 
         <!-- CUSTOMER SUMMARY -->
@@ -64,6 +58,11 @@
                 <h2 id="total-customer-purchases">0</h2>
             </div>
 
+            <div class="customers-summary-card">
+                <p>Total Outstanding Credit</p>
+                <h2 id="total-outstanding-credit">₹0</h2>
+            </div>
+
         </section>
 
         <!-- CUSTOMER LIST -->
@@ -72,24 +71,24 @@
 
             <div class="customers-heading">
                 <h2>All Customers</h2>
-                <p id="customers-message">
-                    Customer records will appear here.
-                </p>
+                <p id="customers-message">Loading customer records...</p>
             </div>
 
             <div class="customers-toolbar">
-
                 <input
                     type="search"
                     id="customers-search"
                     placeholder="Search by name, email or phone..."
                 >
-
             </div>
 
             <div id="customers-container"></div>
 
         </section>
+
+        <!-- REPAYMENT MESSAGE -->
+
+        <div id="repayment-message" role="status" aria-live="polite"></div>
 
     </main>
 
@@ -106,6 +105,7 @@
     <!-- ADMIN ACCESS GUARD -->
 
     <script src="../../js/admin/admin-guard.js"></script>
+    <script src="../../js/admin/customers.js"></script>
 
 </body>
 </html>

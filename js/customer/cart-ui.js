@@ -335,7 +335,19 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         summary.append(subtotalLabel, subtotalValue);
 
-        cartContainer.append(itemsContainer, summary);
+        const checkoutLink = createElement(
+            "a",
+            "profile-edit-link cart-checkout-link",
+            "Proceed to Checkout"
+        );
+
+        checkoutLink.href = "checkout.html";
+
+        cartContainer.append(
+            itemsContainer,
+            summary,
+            checkoutLink
+        );
 
     }
 
