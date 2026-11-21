@@ -1,0 +1,180 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="KARTO administrator management.">
+    <title>KARTO | Admin Management</title>
+
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../../css/admin/admin.css">
+</head>
+<body>
+
+    <!-- ADMIN HEADER -->
+
+    <header class="admin-header">
+
+        <a href="dashboard.html" class="admin-logo">
+            KARTO<span>.</span>
+        </a>
+
+        <div class="admin-header-right">
+            <span id="admin-name">Administrator</span>
+            <button id="admin-logout" type="button">Logout</button>
+        </div>
+
+    </header>
+
+    <!-- ADMIN MANAGEMENT -->
+
+    <main class="admin-main">
+
+        <section class="admin-welcome">
+
+            <div>
+                <p class="admin-eyebrow">ACCESS CONTROL</p>
+                <h1>Admin Management</h1>
+                <p>Manage administrator access and permissions.</p>
+            </div>
+
+            <a href="dashboard.html" class="admin-back-link">
+                Back to Dashboard
+            </a>
+
+        </section>
+
+        <!-- ADMIN SUMMARY -->
+
+        <section class="admin-management-summary">
+
+            <div class="admin-management-summary-card">
+                <p>Total Administrators</p>
+                <h2 id="total-admins">0</h2>
+            </div>
+
+            <div class="admin-management-summary-card">
+                <p>Primary Administrators</p>
+                <h2 id="primary-admins">0</h2>
+            </div>
+
+            <div class="admin-management-summary-card">
+                <p>Secondary Administrators</p>
+                <h2 id="secondary-admins">0</h2>
+            </div>
+
+        </section>
+
+        <!-- ADMIN LIST -->
+
+        <section class="admin-management-section">
+
+            <div class="admin-management-heading">
+                <div>
+                    <h2>Administrator Accounts</h2>
+                    <p id="admin-management-message">
+                        Administrator records will appear here.
+                    </p>
+                </div>
+
+                <button type="button" id="add-admin-button">
+                    Add Administrator
+                </button>
+            </div>
+
+            <div class="admin-management-toolbar">
+
+                <input
+                    type="search"
+                    id="admin-management-search"
+                    placeholder="Search administrators..."
+                >
+
+            </div>
+
+            <div id="admin-management-container"></div>
+
+<!-- ADD ADMINISTRATOR MODAL -->
+
+<div class="admin-modal-overlay" id="add-admin-modal">
+
+    <div class="admin-modal">
+
+        <div class="admin-modal-heading">
+            <div>
+                <p class="admin-eyebrow">ACCESS CONTROL</p>
+                <h2>Add Administrator</h2>
+            </div>
+
+            <button
+                type="button"
+                id="close-add-admin-modal"
+                aria-label="Close"
+            >&times;</button>
+        </div>
+
+        <p>
+            Enter the email address of an existing KARTO customer
+            to promote them to Secondary Administrator.
+        </p>
+
+        <form id="add-admin-form">
+
+            <label for="new-admin-email">Customer Email Address</label>
+
+            <input
+                type="email"
+                id="new-admin-email"
+                placeholder="customer@example.com"
+                required
+            >
+
+            <p id="add-admin-message"></p>
+
+            <div class="admin-modal-actions">
+
+                <button
+                    type="button"
+                    id="cancel-add-admin"
+                >
+                    Cancel
+                </button>
+
+                <button
+                    type="submit"
+                    id="confirm-add-admin"
+                >
+                    Promote to Admin
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+        </section>
+
+    </main>
+
+    <!-- FIREBASE CONFIGURATION -->
+
+    <script src="../../js/firebase/firebase-config.js"></script>
+    <script src="../../js/firebase/rest-client.js"></script>
+
+    <!-- AUTHENTICATION -->
+
+    <script src="../../js/auth/auth-service.js"></script>
+    <script src="../../js/auth/session-service.js"></script>
+
+    <!-- ADMIN ACCESS GUARD -->
+
+    <script src="../../js/admin/admin-guard.js"></script>
+    <script src="../../js/admin/admin-management.js"></script>
+
+</body>
+</html>

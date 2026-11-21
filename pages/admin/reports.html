@@ -1,0 +1,117 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="KARTO business reports.">
+    <title>KARTO | Reports</title>
+
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../../css/admin/admin.css">
+</head>
+<body>
+
+    <!-- ADMIN HEADER -->
+
+    <header class="admin-header">
+
+        <a href="dashboard.html" class="admin-logo">
+            KARTO<span>.</span>
+        </a>
+
+        <div class="admin-header-right">
+            <span id="admin-name">Administrator</span>
+            <button id="admin-logout" type="button">Logout</button>
+        </div>
+
+    </header>
+
+    <!-- REPORTS MAIN CONTENT -->
+
+    <main class="admin-main">
+
+        <section class="admin-welcome">
+
+            <div>
+                <p class="admin-eyebrow">BUSINESS ANALYTICS</p>
+                <h1>Reports</h1>
+                <p>Understand sales, customers and inventory performance.</p>
+            </div>
+
+            <a href="dashboard.html" class="admin-back-link">
+                Back to Dashboard
+            </a>
+
+        </section>
+
+        <!-- REPORT CATEGORIES -->
+
+        <section class="reports-grid">
+
+            <a href="#sales-report" class="report-card">
+                <div class="report-card-icon">↗</div>
+                <h2>Sales Reports</h2>
+                <p>Analyse sales performance, revenue and payment methods.</p>
+                <span>Explore Report →</span>
+            </a>
+
+            <a href="#customer-report" class="report-card">
+                <div class="report-card-icon">♙</div>
+                <h2>Customer Reports</h2>
+                <p>Review customer activity and purchase history.</p>
+                <span>Explore Report →</span>
+            </a>
+
+            <a href="#inventory-report" class="report-card">
+                <div class="report-card-icon">▤</div>
+                <h2>Inventory Reports</h2>
+                <p>Monitor stock levels and product availability.</p>
+                <span>Explore Report →</span>
+            </a>
+
+        </section>
+
+        <!-- REPORT SECTIONS -->
+
+        <section class="reports-section" id="sales-report">
+            <p class="admin-eyebrow">REPORT 01</p>
+            <h2>Sales Reports</h2>
+            <p>Sales by date range, category, cash, credit and top or bottom selling products.</p>
+            <div id="sales-report-container"></div>
+        </section>
+
+        <section class="reports-section" id="customer-report">
+            <p class="admin-eyebrow">REPORT 02</p>
+            <h2>Customer Reports</h2>
+            <p>Customer purchases, cash and credit transactions across selected date ranges.</p>
+            <div id="customer-report-container"></div>
+        </section>
+
+        <section class="reports-section" id="inventory-report">
+            <p class="admin-eyebrow">REPORT 03</p>
+            <h2>Inventory Reports</h2>
+            <p>All products, category-wise stock, high stock and low stock.</p>
+            <div id="inventory-report-container"></div>
+        </section>
+
+    </main>
+
+<!-- FIREBASE CONFIGURATION -->
+<script src="../../js/firebase/firebase-config.js"></script>
+<script src="../../js/firebase/rest-client.js"></script>
+
+<!-- AUTHENTICATION -->
+<script src="../../js/auth/auth-service.js"></script>
+<script src="../../js/auth/session-service.js"></script>
+
+<!-- PRODUCT SERVICE -->
+<script src="../../js/services/product-service.js"></script>
+
+<!-- ADMIN ACCESS GUARD -->
+<script src="../../js/admin/admin-guard.js"></script>
+
+<!-- REPORTS -->
+<script src="../../js/admin/reports.js"></script>
+</body>
+</html>

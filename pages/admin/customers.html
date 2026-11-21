@@ -1,0 +1,111 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="KARTO customer management.">
+    <title>KARTO | Customers</title>
+
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../../css/admin/admin.css">
+</head>
+<body>
+
+    <!-- ADMIN HEADER -->
+
+    <header class="admin-header">
+
+        <a href="dashboard.html" class="admin-logo">
+            KARTO<span>.</span>
+        </a>
+
+        <div class="admin-header-right">
+            <span id="admin-name">Administrator</span>
+            <button id="admin-logout" type="button">Logout</button>
+        </div>
+
+    </header>
+
+    <!-- CUSTOMER MANAGEMENT -->
+
+    <main class="admin-main">
+
+        <section class="admin-welcome">
+
+            <div>
+                <p class="admin-eyebrow">CUSTOMER MANAGEMENT</p>
+                <h1>Customers</h1>
+                <p>View customer accounts and their purchase activity.</p>
+            </div>
+
+            <a href="dashboard.html" class="admin-back-link">
+                Back to Dashboard
+            </a>
+
+        </section>
+
+        <!-- CUSTOMER SUMMARY -->
+
+        <section class="customers-summary">
+
+            <div class="customers-summary-card">
+                <p>Total Customers</p>
+                <h2 id="total-customers">0</h2>
+            </div>
+
+            <div class="customers-summary-card">
+                <p>Active Customers</p>
+                <h2 id="active-customers">0</h2>
+            </div>
+
+            <div class="customers-summary-card">
+                <p>Total Purchases</p>
+                <h2 id="total-customer-purchases">0</h2>
+            </div>
+
+        </section>
+
+        <!-- CUSTOMER LIST -->
+
+        <section class="customers-section">
+
+            <div class="customers-heading">
+                <h2>All Customers</h2>
+                <p id="customers-message">
+                    Customer records will appear here.
+                </p>
+            </div>
+
+            <div class="customers-toolbar">
+
+                <input
+                    type="search"
+                    id="customers-search"
+                    placeholder="Search by name, email or phone..."
+                >
+
+            </div>
+
+            <div id="customers-container"></div>
+
+        </section>
+
+    </main>
+
+    <!-- FIREBASE CONFIGURATION -->
+
+    <script src="../../js/firebase/firebase-config.js"></script>
+    <script src="../../js/firebase/rest-client.js"></script>
+
+    <!-- AUTHENTICATION -->
+
+    <script src="../../js/auth/auth-service.js"></script>
+    <script src="../../js/auth/session-service.js"></script>
+
+    <!-- ADMIN ACCESS GUARD -->
+
+    <script src="../../js/admin/admin-guard.js"></script>
+
+</body>
+</html>

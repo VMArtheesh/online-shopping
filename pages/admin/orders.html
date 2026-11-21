@@ -1,0 +1,124 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="KARTO order management.">
+    <title>KARTO | Orders</title>
+
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../../css/admin/admin.css">
+</head>
+<body>
+
+    <!-- ADMIN HEADER -->
+
+    <header class="admin-header">
+
+        <a href="dashboard.html" class="admin-logo">
+            KARTO<span>.</span>
+        </a>
+
+        <div class="admin-header-right">
+            <span id="admin-name">Administrator</span>
+            <button id="admin-logout" type="button">Logout</button>
+        </div>
+
+    </header>
+
+    <!-- ORDERS MAIN CONTENT -->
+
+    <main class="admin-main">
+
+        <section class="admin-welcome">
+
+            <div>
+                <p class="admin-eyebrow">ORDER MANAGEMENT</p>
+                <h1>Orders</h1>
+                <p>View and manage customer orders.</p>
+            </div>
+
+            <a href="dashboard.html" class="admin-back-link">
+                Back to Dashboard
+            </a>
+
+        </section>
+
+        <!-- ORDER SUMMARY -->
+
+        <section class="orders-summary">
+
+            <div class="orders-summary-card">
+                <p>Total Orders</p>
+                <h2 id="total-orders">0</h2>
+            </div>
+
+            <div class="orders-summary-card">
+                <p>Pending</p>
+                <h2 id="pending-orders">0</h2>
+            </div>
+
+            <div class="orders-summary-card">
+                <p>Processing</p>
+                <h2 id="processing-orders">0</h2>
+            </div>
+
+            <div class="orders-summary-card">
+                <p>Completed</p>
+                <h2 id="completed-orders">0</h2>
+            </div>
+
+        </section>
+
+        <!-- ORDERS LIST -->
+
+        <section class="orders-section">
+
+            <div class="orders-heading">
+                <h2>All Orders</h2>
+                <p id="orders-message">
+                    Order records will appear here.
+                </p>
+            </div>
+
+            <div class="orders-toolbar">
+
+                <input
+                    type="search"
+                    id="orders-search"
+                    placeholder="Search by order ID or customer..."
+                >
+
+                <select id="orders-status-filter">
+                    <option value="">All Orders</option>
+                    <option value="pending">Pending</option>
+                    <option value="processing">Processing</option>
+                    <option value="completed">Completed</option>
+                    <option value="cancelled">Cancelled</option>
+                </select>
+
+            </div>
+
+            <div id="orders-container"></div>
+
+        </section>
+
+    </main>
+
+    <!-- FIREBASE CONFIGURATION -->
+
+    <script src="../../js/firebase/firebase-config.js"></script>
+    <script src="../../js/firebase/rest-client.js"></script>
+
+    <!-- AUTHENTICATION -->
+
+    <script src="../../js/auth/auth-service.js"></script>
+    <script src="../../js/auth/session-service.js"></script>
+
+    <!-- ADMIN ACCESS GUARD -->
+
+    <script src="../../js/admin/admin-guard.js"></script>
+
+</body>
+</html>

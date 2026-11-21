@@ -545,6 +545,7 @@ window.addEventListener("scroll", updateNavbarOnScroll, {
 
 updateNavbarOnScroll();
 
+
 /* =====================================
    ACCOUNT NAVIGATION
 ===================================== */
@@ -553,12 +554,50 @@ const accountLink = document.querySelector("#account-link");
 
 if (accountLink) {
 
-    const session = JSON.parse(
-        sessionStorage.getItem("kartoUserSession") || "null"
-    );
+    accountLink.addEventListener("click", async event => {
 
-    accountLink.href = session?.uid
-        ? "pages/customer/dashboard.html"
-        : "pages/auth/login.html";
+        event.preventDefault();
+
+        try {
+
+            const session = await getUserSession();
+
+            if (!session) {
+                window.location.href = "pages/auth/login.html";
+                return;
+            }
+
+            const response = await firestoreRequest(
+                `users/${encodeURIComponent(session.uid)}`,
+                {
+                    idToken: session.idToken
+                }
+            );
+
+            const role = response.fields?.role?.stringValue;
+
+            if (role === "primaryAdmin" || role === "admin") {
+
+                window.location.href = "pages/admin/dashboard.html";
+
+            } else if (role === "customer") {
+
+                window.location.href = "pages/customer/dashboard.html";
+
+            } else {
+
+                window.location.href = "pages/auth/login.html";
+
+            }
+
+        } catch (error) {
+
+            console.error("Account navigation failed:", error);
+
+            window.location.href = "pages/auth/login.html";
+
+        }
+
+    });
 
 }
