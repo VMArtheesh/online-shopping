@@ -1,0 +1,72 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Your KARTO shopping cart.">
+    <title>My Cart | KARTO</title>
+
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../../css/customer.css">
+</head>
+<body>
+
+    <!-- Customer Navigation -->
+    <header class="customer-header">
+        <a href="../../index.html" class="customer-logo">KARTO</a>
+
+        <nav class="customer-nav">
+            <a href="../../index.html">Home</a>
+            <a href="dashboard.html">My Account</a>
+            <a href="profile.html">My Profile</a>
+            <a href="cart.html" class="active">My Cart</a>
+            <button type="button" id="logout-button">Logout</button>
+        </nav>
+    </header>
+
+    <main class="dashboard-container">
+
+        <!-- Cart Welcome Section -->
+        <section class="dashboard-welcome">
+            <div>
+                <p class="dashboard-eyebrow">YOUR SHOPPING</p>
+                <h1>My Shopping Cart</h1>
+                <p class="dashboard-description">
+                    Review your selected products before proceeding to checkout.
+                </p>
+            </div>
+        </section>
+
+        <!-- Cart Items Section -->
+        <section class="dashboard-section">
+            <div class="dashboard-section-heading">
+                <div>
+                    <p class="dashboard-eyebrow">YOUR SELECTION</p>
+                    <h2>Cart Items</h2>
+                </div>
+
+                <a href="../../index.html" class="profile-edit-link">
+                    Continue Shopping
+                </a>
+            </div>
+
+            <div id="cart-container" class="account-info-card">
+                <p>Loading your cart...</p>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Firebase and Customer Scripts -->
+    <script src="../../js/firebase/firebase-config.js"></script>
+    <script src="../../js/firebase/rest-client.js"></script>
+    <script src="../../js/services/product-service.js"></script>
+    <script src="../../js/services/cart-service.js"></script>
+    <script src="../../js/auth/auth-service.js"></script>
+    <script src="../../js/auth/session-service.js"></script>
+    <script src="../../js/customer/logout.js"></script>
+    <script src="../../js/customer/cart-ui.js"></script>
+
+</body>
+</html>

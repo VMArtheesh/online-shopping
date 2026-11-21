@@ -1,24 +1,60 @@
 
 /* =====================================
-   KARTO CUSTOMER LOGIN UI
+   KARTO CUSTOMER & ADMIN LOGIN UI
 ===================================== */
 
 document.addEventListener("DOMContentLoaded", async () => {
 
     const loginForm = document.getElementById("login-form");
-
     const emailInput = document.getElementById("email");
     const passwordInput = document.getElementById("password");
-
     const loginButton = document.getElementById("login-button");
     const loginMessage = document.getElementById("login-message");
-    // Redirect customers who already have an active session
-    if (await getUserSession()) {
-        window.location.href = "../customer/dashboard.html";
-        return;
+
+    // Retrieve the user's role from Firestore
+    async function getDashboardPath(session) {
+
+        const response = await firestoreRequest(
+            `users/${encodeURIComponent(session.uid)}`,
+            {
+                idToken: session.idToken
+            }
+        );
+
+        const role = response.fields?.role?.stringValue;
+
+        if (role === "primaryAdmin" || role === "admin") {
+            return "../admin/dashboard.html";
+        }
+
+        if (role === "customer") {
+            return "../customer/dashboard.html";
+        }
+
+        throw new Error("Your account does not have a valid role.");
     }
 
-    // Handle customer login
+    // Redirect users who already have an active session
+    try {
+
+        const existingSession = await getUserSession();
+
+        if (existingSession) {
+
+            const dashboardPath = await getDashboardPath(existingSession);
+
+            window.location.href = dashboardPath;
+            return;
+        }
+
+    } catch (error) {
+
+        console.error("Existing session check failed:", error);
+        clearUserSession();
+
+    }
+
+    // Handle login
     loginForm.addEventListener("submit", async (event) => {
 
         event.preventDefault();
@@ -26,30 +62,42 @@ document.addEventListener("DOMContentLoaded", async () => {
         loginMessage.textContent = "";
         loginMessage.style.color = "#c0392b";
 
-        // Prevent repeated submissions
         loginButton.disabled = true;
         loginButton.textContent = "Signing In...";
 
         try {
 
-            // Authenticate customer with Firebase
+            // Authenticate with Firebase
             const authData = await signInWithEmailAndPassword(
                 emailInput.value,
                 passwordInput.value
             );
 
-            // Save the customer session
+            // Save authenticated session
             saveUserSession(authData);
 
-            loginMessage.style.color = "#287a45";
-            loginMessage.textContent =
-                "Login successful!";
+            // Retrieve the saved session
+            const session = await getUserSession();
 
-            console.log("Customer login successful.");
-            // Redirect to customer dashboard
-            window.location.href = "../customer/dashboard.html";
+            if (!session) {
+                throw new Error("Unable to establish your login session.");
+            }
+
+            // Determine the correct dashboard
+            const dashboardPath = await getDashboardPath(session);
+
+            loginMessage.style.color = "#287a45";
+            loginMessage.textContent = "Login successful!";
+
+            console.log("Login successful. Redirecting to:", dashboardPath);
+
+            window.location.href = dashboardPath;
 
         } catch (error) {
+
+            console.error("Login error:", error);
+
+            clearUserSession();
 
             loginMessage.style.color = "#c0392b";
             loginMessage.textContent = error.message;

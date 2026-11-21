@@ -1,0 +1,100 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="KARTO administration dashboard.">
+    <title>KARTO | Admin Dashboard</title>
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../../css/admin/admin.css">
+</head>
+<body>
+
+    <header class="admin-header">
+        <a href="../../index.html" class="admin-logo">
+            KARTO<span>.</span>
+        </a>
+
+        <div class="admin-header-right">
+            <span id="admin-name">Administrator</span>
+            <button id="admin-logout" type="button">Logout</button>
+        </div>
+    </header>
+
+    <main class="admin-dashboard">
+
+        <section class="admin-welcome">
+            <p class="admin-eyebrow">ADMINISTRATION</p>
+            <h1>Dashboard</h1>
+            <p>Manage your store and monitor business activity.</p>
+        </section>
+
+        <section class="admin-overview">
+
+            <a href="#" class="admin-card">
+                <span class="admin-card-label">Products</span>
+                <span class="admin-card-description">
+                    Add, edit and manage products
+                </span>
+            </a>
+
+            <a href="#" class="admin-card">
+                <span class="admin-card-label">Inventory</span>
+                <span class="admin-card-description">
+                    Monitor stock availability
+                </span>
+            </a>
+
+            <a href="#" class="admin-card">
+                <span class="admin-card-label">Orders</span>
+                <span class="admin-card-description">
+                    View and manage customer orders
+                </span>
+            </a>
+
+            <a href="#" class="admin-card">
+                <span class="admin-card-label">Customers</span>
+                <span class="admin-card-description">
+                    View registered customers
+                </span>
+            </a>
+
+            <a href="#" class="admin-card">
+                <span class="admin-card-label">Reports</span>
+                <span class="admin-card-description">
+                    Review sales and business reports
+                </span>
+            </a>
+
+            <a href="#" class="admin-card">
+                <span class="admin-card-label">Admin Management</span>
+                <span class="admin-card-description">
+                    Manage administrator accounts
+                </span>
+            </a>
+
+        </section>
+
+    </main>
+
+    <!-- Firebase Configuration -->
+    <script src="../../js/firebase/firebase-config.js"></script>
+
+    <!-- Firestore REST Client -->
+    <script src="../../js/firebase/rest-client.js"></script>
+
+    <!-- Authentication Service -->
+    <script src="../../js/auth/auth-service.js"></script>
+
+    <!-- Session Service -->
+    <script src="../../js/auth/session-service.js"></script>
+
+    <!-- Admin Access Guard -->
+    <script src="../../js/admin/admin-guard.js"></script>
+</body>
+</html>
+
+
+</body>
+</html>
